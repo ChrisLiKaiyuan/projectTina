@@ -320,11 +320,13 @@ class AdvancedDungeonMap(DungeonMap):
         super().__init__(master, size, width, **kwargs)
 
     def draw_grid(self, dungeon, player_position):
+        index = 0
+        wall = [None] * len(dungeon)
         for position in dungeon:
             pixel = self.get_position_center((position[1], position[0]))
             if dungeon[position].get_id() == '#':
-                wall = tk.PhotoImage(file='wall.png')
-                self.create_image(pixel[0], pixel[1], image=wall)
+                wall[index] = tk.PhotoImage(file='wall.png')
+                self.create_image(pixel[0], pixel[1], image=wall[index])
 
             elif dungeon[position].get_id() == 'K':
                 self.get_bbox(position, fill='yellow')
@@ -337,9 +339,11 @@ class AdvancedDungeonMap(DungeonMap):
             elif dungeon[position].get_id() == 'M':
                 self.get_bbox(position, fill='#ed6a37')
                 self.annotate_position(position, 'Banana')
+            index += 1
 
         self.get_bbox(player_position, fill='green')
         self.annotate_position(player_position, 'ibis')
+        self.mainloop()
 
 
 class KeyPad(AbstractGrid):
